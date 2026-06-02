@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema Biblioteca - API</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Sistema Biblioteca</h1>
+    <p>Interface para testar a API</p>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="alunos">Alunos</button>
+    <a class="tab" data-tab="emprestimos" href="emprestimos.html">Empréstimos</a>
+    <a class="tab" data-tab="acervo" href="acervo.html">Acervo</a>
+    <a class="tab" data-tab="livros" href="livros.html">Livros</a>
+    <a class="tab" data-tab="areas" href="areas.html">Áreas</a>
+  </nav>
+
+  <main>
+    <!-- ============ ALUNOS ============ -->
+    <section id="tab-alunos" class="tab-content active">
+      <div class="card">
+        <h2>Cadastrar Aluno</h2>
+        <form id="form-aluno-create">
+          <input name="matricula" placeholder="Matrícula" required>
+          <input name="nome" placeholder="Nome" required>
+          <input name="email" type="email" placeholder="Email">
+          <input name="telefone" placeholder="Telefone">
+          <button type="submit">Cadastrar</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Buscar Alunos</h2>
+        <div class="search-bar">
+          <input id="search-matricula" placeholder="Filtrar por matrícula (opcional)">
+          <button id="btn-search-aluno">Buscar</button>
+          <button id="btn-list-all-alunos" class="secondary">Listar Todos</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Alunos</h2>
+        <div id="alunos-list"><p class="empty">Nenhum aluno encontrado.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

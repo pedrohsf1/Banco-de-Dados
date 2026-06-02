@@ -1,0 +1,9 @@
+USE master 2;
+GO
+
+IF EXISTS (SELECT name FROM sys.databases WHERE name = 'trabalhoDB')
+BEGIN
+    ALTER DATABASE trabalhoDB SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE trabalhoDB;
+END;
+GO

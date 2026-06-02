@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema Biblioteca - Empréstimos</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Sistema Biblioteca</h1>
+    <p>Interface para testar a API</p>
+  </header>
+
+  <nav class="tabs">
+    <a class="tab" href="index.html">Alunos</a>
+    <a class="tab active" href="emprestimos.html">Empréstimos</a>
+    <a class="tab" href="acervo.html">Acervo</a>
+    <a class="tab" href="livros.html">Livros</a>
+    <a class="tab" href="areas.html">Áreas</a>
+  </nav>
+
+  <main>
+    <div class="card">
+      <h2>Registrar Empréstimo</h2>
+      <form id="form-emprestimo-create">
+        <select name="id_aluno" required>
+          <option value="">Selecione um aluno...</option>
+        </select>
+        <select name="id_exemplar" required>
+          <option value="">Selecione um exemplar...</option>
+        </select>
+        <select name="id_funcionario" required>
+          <option value="">Selecione um funcionário...</option>
+        </select>
+        <input name="dias_emprestimo" id="dias-emprestimo" type="number" placeholder="Dias (padrão 7)" value="7">
+        <button type="submit">Registrar</button>
+        <small id="data-prevista-preview" style="width:100%;color:#666;margin-top:4px">Devolução prevista: calculando...</small>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Registrar Devolução</h2>
+      <form id="form-emprestimo-return">
+        <select name="id_emprestimo" required>
+          <option value="">Selecione um empréstimo...</option>
+        </select>
+        <input name="valor_multa_diaria" step="0.01" placeholder="Multa diária (padrão 2.50)" value="2.50">
+        <button type="submit">Devolver</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Histórico de Empréstimos</h2>
+      <div class="search-bar">
+        <input id="search-emprestimo" placeholder="Pesquisar por aluno, matrícula ou livro...">
+        <button id="btn-search-emprestimo">Buscar</button>
+        <button id="btn-list-all-emprestimos" class="secondary">Listar Todos</button>
+      </div>
+      <div id="emprestimos-historico"><p class="empty">Nenhum empréstimo encontrado.</p></div>
+    </div>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/emprestimos.js"></script>
+</body>
+</html>

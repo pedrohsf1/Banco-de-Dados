@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema Biblioteca - Livros</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Sistema Biblioteca</h1>
+    <p>Interface para testar a API</p>
+  </header>
+
+  <nav class="tabs">
+    <a class="tab" href="index.html">Alunos</a>
+    <a class="tab" href="emprestimos.html">Empréstimos</a>
+    <a class="tab" href="acervo.html">Acervo</a>
+    <a class="tab active" href="livros.html">Livros</a>
+    <a class="tab" href="areas.html">Áreas</a>
+  </nav>
+
+  <main>
+    <div class="card">
+      <h2>Cadastrar Livro</h2>
+      <form id="form-livro-create">
+        <input name="isbn" placeholder="ISBN" required>
+        <input name="titulo" placeholder="Título" required>
+        <input name="ano_publicacao" type="number" placeholder="Ano de Publicação">
+        <select name="id_editora" required>
+          <option value="">Selecione uma editora...</option>
+        </select>
+        <select name="id_area" required>
+          <option value="">Selecione uma área...</option>
+        </select>
+        <div style="display:flex;gap:4px;flex:1 1 100%">
+          <select name="id_autores" multiple required style="flex:1">
+          </select>
+          <button type="button" class="secondary" id="btn-add-autor" style="white-space:nowrap;align-self:flex-start">+ Autor</button>
+        </div>
+        <small style="width:100%;color:#666;margin-top:2px">Segure Ctrl para selecionar múltiplos autores</small>
+        <button type="submit">Cadastrar</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Livros</h2>
+      <div class="search-bar">
+        <input id="search-livro" placeholder="Pesquisar por título ou ISBN...">
+        <button id="btn-search-livro">Buscar</button>
+        <button id="btn-list-all-livros" class="secondary">Listar Todos</button>
+      </div>
+      <div id="livros-list"><p class="empty">Nenhum livro encontrado.</p></div>
+    </div>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/livros.js"></script>
+</body>
+</html>

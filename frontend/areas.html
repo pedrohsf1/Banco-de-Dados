@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema Biblioteca - Áreas</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Sistema Biblioteca</h1>
+    <p>Interface para testar a API</p>
+  </header>
+
+  <nav class="tabs">
+    <a class="tab" href="index.html">Alunos</a>
+    <a class="tab" href="emprestimos.html">Empréstimos</a>
+    <a class="tab" href="acervo.html">Acervo</a>
+    <a class="tab" href="livros.html">Livros</a>
+    <a class="tab active" href="areas.html">Áreas</a>
+  </nav>
+
+  <main>
+    <div class="card">
+      <h2>Cadastrar Área de Conhecimento</h2>
+      <form id="form-area-create">
+        <input name="descricao" placeholder="Descrição da área" required>
+        <button type="submit">Cadastrar</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Áreas de Conhecimento</h2>
+      <div id="areas-list"><p class="empty">Nenhuma área encontrada.</p></div>
+    </div>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/areas.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema Biblioteca - Acervo</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Sistema Biblioteca</h1>
+    <p>Interface para testar a API</p>
+  </header>
+
+  <nav class="tabs">
+    <a class="tab" href="index.html">Alunos</a>
+    <a class="tab" href="emprestimos.html">Empréstimos</a>
+    <a class="tab active" href="acervo.html">Acervo</a>
+    <a class="tab" href="livros.html">Livros</a>
+    <a class="tab" href="areas.html">Áreas</a>
+  </nav>
+
+  <main>
+    <div class="card">
+      <h2>Exemplares do Acervo</h2>
+      <div class="search-bar">
+        <input id="search-acervo" placeholder="Pesquisar por título, ISBN ou código de barras...">
+        <button id="btn-search-acervo">Buscar</button>
+        <button id="btn-list-all-acervo" class="secondary">Listar Todos</button>
+      </div>
+      <div id="acervo-list"><p class="empty">Nenhum exemplar encontrado.</p></div>
+    </div>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/acervo.js"></script>
+</body>
+</html>

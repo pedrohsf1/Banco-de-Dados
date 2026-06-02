@@ -1,0 +1,122 @@
+Aqui está o conteúdo completo e unificado, contendo a estrutura de todas as tabelas, as *procedures* e os dados iniciais do seu sistema de biblioteca.
+
+Crie um arquivo chamado **`contexto_banco.txt`**, cole o texto abaixo dentro dele e envie para o OpenCode ler. Assim ele saberá exatamente o nome de cada tabela, coluna e parâmetro para te ajudar a programar.
+
+---
+
+### Conteúdo para colar no arquivo `.txt`:
+
+```text
+=== CONTEXTO DO BANCO DE DADOS: trabalhodb ===
+Este documento contém a estrutura exata do banco de dados (tabelas, colunas, chaves primárias, chaves estrangeiras, procedimentos armazenados e dados de exemplo) para o Sistema de Biblioteca.
+
+---
+
+1. ESTRUTURA DAS TABELAS (TABELAS BASE)
+
+* Tabela: area_conhecimento
+  - id_area (INT, IDENTITY(1,1), CHAVE PRIMÁRIA)
+  - descricao (VARCHAR(100), NÃO NULO)
+
+* Tabela: editora
+  - id_editora (INT, IDENTITY(1,1), CHAVE PRIMÁRIA)
+  - nome (VARCHAR(100), NÃO NULO)
+
+* Tabela: autor
+  - id_autor (INT, IDENTITY(1,1), CHAVE PRIMÁRIA)
+  - nome (VARCHAR(100), NÃO NULO)
+
+* Tabela: funcionario
+  - id_funcionario (INT, IDENTITY(1,1), CHAVE PRIMÁRIA)
+  - nome (VARCHAR(100), NÃO NULO)
+  - cargo (VARCHAR(50), NÃO NULO)
+
+* Tabela: aluno
+  - id_aluno (INT, IDENTITY(1,1), CHAVE PRIMÁRIA)
+  - matricula (VARCHAR(20), ÚNICO, NÃO NULO)
+  - nome (VARCHAR(100), NÃO NULO)
+  - email (VARCHAR(100), NULO)
+  - telefone (VARCHAR(20), NULO)
+  - status_bloqueio (BIT, PADRÃO 0)
+
+---
+
+2. ESTRUTURA DAS TABELAS (ACERVO E MOVIMENTAÇÃO)
+
+* Tabela: livro
+  - id_livro (INT, IDENTITY(1,1), CHAVE PRIMÁRIA)
+  - isbn (VARCHAR(20), ÚNICO, NÃO NULO)
+  - titulo (VARCHAR(200), NÃO NULO)
+  - ano_publicacao (INT, NULO)
+  - id_editora (INT, CHAVE ESTRANGEIRA -> editora.id_editora)
+  - id_area (INT, CHAVE ESTRANGEIRA -> area_conhecimento.id_area)
+
+* Tabela: livro_autor
+  - id_livro (INT, CHAVE PRIMÁRIA COMPOSTA, CHAVE ESTRANGEIRA -> livro.id_livro)
+  - id_autor (INT, CHAVE PRIMÁRIA COMPOSTA, CHAVE ESTRANGEIRA -> autor.id_autor)
+
+* Tabela: exemplar
+  - id_exemplar (INT, IDENTITY(1,1), CHAVE PRIMÁRIA)
+  - codigo_barras (VARCHAR(50), ÚNICO, NÃO NULO)
+  - condicao (VARCHAR(50), PADRÃO 'Novo')
+  - id_livro (INT, NÃO NULO, CHAVE ESTRANGEIRA -> livro.id_livro)
+
+* Tabela: emprestimo
+  - id_emprestimo (INT, IDENTITY(1,1), CHAVE PRIMÁRIA)
+  - data_emprestimo (DATE, NÃO NULO)
+  - data_devolucao_prevista (DATE, NÃO NULO)
+  - data_devolucao_real (DATE, NULO)
+  - valor_multa (DECIMAL(10,2), PADRÃO 0.00)
+  - id_aluno (INT, NÃO NULO, CHAVE ESTRANGEIRA -> aluno.id_aluno)
+  - id_exemplar (INT, NÃO NULO, CHAVE ESTRANGEIRA -> exemplar.id_exemplar)
+  - id_funcionario (INT, NÃO NULO, CHAVE ESTRANGEIRA -> funcionario.id_funcionario)
+
+* Tabela: reserva
+  - id_reserva (INT, IDENTITY(1,1), CHAVE PRIMÁRIA)
+  - data_reserva (DATE, NÃO NULO)
+  - status (VARCHAR(20), PADRÃO 'Aguardando')
+  - id_aluno (INT, NÃO NULO, CHAVE ESTRANGEIRA -> aluno.id_aluno)
+  - id_livro (INT, NÃO NULO, CHAVE ESTRANGEIRA -> livro.id_livro)
+
+---
+
+3. STORED PROCEDURES (PROCEDIMENTOS ARMAZENADOS)
+
+* Procedure: SP_Inserir_Aluno
+  - Parâmetros: @matricula (VARCHAR), @nome (VARCHAR), @email (VARCHAR), @telefone (VARCHAR)
+  - Ação: Insere um novo aluno com status_bloqueio = 0.
+
+* Procedure: SP_Consultar_Aluno
+  - Parâmetros: @matricula (VARCHAR, Opcional)
+  - Ação: Se passar matrícula, filtra por ela; se omitir, lista todos os alunos.
+
+* Procedure: SP_Atualizar_Aluno
+  - Parâmetros: @id_aluno (INT), @nome (VARCHAR), @email (VARCHAR), @telefone (VARCHAR), @status_bloqueio (BIT)
+  - Ação: Atualiza os dados cadastrais e o status de bloqueio do aluno.
+
+* Procedure: SP_Excluir_Aluno
+  - Parâmetros: @id_aluno (INT)
+  - Ação: Exclui o registro do aluno baseado no ID.
+
+* Procedure: SP_Registrar_Emprestimo
+  - Parâmetros: @id_aluno (INT), @id_exemplar (INT), @id_funcionario (INT), @dias_emprestimo (INT, Padrão: 7)
+  - Ação: Grava um empréstimo novo calculando a data de entrega prevista baseada nos dias enviados.
+
+* Procedure: SP_Registrar_Devolucao
+  - Parâmetros: @id_emprestimo (INT), @valor_multa_diaria (DECIMAL(10,2), Padrão: 2.50)
+  - Ação: Atualiza a 'data_devolucao_real' para a data de hoje (GETDATE()). Calcula automaticamente os dias de atraso comparando com a 'data_devolucao_prevista'. Caso haja atraso, multiplica os dias pelo '@valor_multa_diaria' e atualiza a coluna 'valor_multa' na tabela 'emprestimo'.
+
+---
+
+4. REGRAS PARA CONSULTAS SQL NA API (JOINS DAS ROTAS)
+
+* Para listar Empréstimos Ativos (Pendentes de devolução):
+  Filtrar por: 'WHERE emprestimo.data_devolucao_real IS NULL'
+  Fazer INNER JOIN com 'aluno' para expor (nome, matricula) e com 'livro' através do 'exemplar' para expor (titulo).
+
+* Para listar Histórico de Devoluções Realizadas:
+  Filtrar por: 'WHERE emprestimo.data_devolucao_real IS NOT NULL'
+  Fazer INNER JOIN com 'aluno' (nome, matricula), 'livro' (titulo) e 'funcionario' (nome).
+=== FIM DO CONTEXTO ===
+
+```
